@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success - Flower Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 3rem;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .success-icon {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        .success-container h1 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        .order-id {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>🌸 Flower Shop</h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="success-container">
+        <div class="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <h2>অর্ডার সফল হয়েছে!</h2>
+        <p>Thank you for your order. Your payment has been processed successfully.</p>
+        <div class="order-id" id="order-info">
+            Loading order details...
+        </div>
+        <button class="btn-primary" onclick="window.location.href='index.html'">
+            Back to Home
+        </button>
+        <button class="btn-primary" onclick="window.location.href='tracking.html'" style="margin-left: 1rem;">
+            Track Order
+        </button>
+    </div>
+
+    <script>
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+        
+        if (orderId) {
+            document.getElementById('order-info').innerHTML = `
+                <strong>Order ID:</strong> #${orderId.slice(-6)}<br>
+                <small>আপনি email এ confirmation পাবেন</small>
+            `;
+        }
+    </script>
+</body>
+</html>

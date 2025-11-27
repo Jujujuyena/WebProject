@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - Flower Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tracking-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 2rem;
+        }
+        
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .tracking-header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .search-box button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .order-timeline {
+            margin-top: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 3rem;
+        }
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #ddd;
+        }
+        
+        .timeline-item.active::before {
+            background: #667eea;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+        
+        .timeline-item.completed::before {
+            background: #4CAF50;
+            box-shadow: 0 0 0 3px #4CAF50;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: #ddd;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .timeline-item.completed::after {
+            background: #4CAF50;
+        }
+        
+        .timeline-content h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-date {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .order-details {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .order-details h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+        
+        .error-message {
+            text-align: center;
+            color: #f44336;
+            padding: 2rem;
+            background: #ffebee;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Same header as index.html -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>🌸 Flower Shop</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="tracking.html">Track Order</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="tracking-container">
+        <div class="tracking-header">
+            <h1>Track Your Order</h1>
+            <p>Enter your order ID to track your delivery</p>
+        </div>
+        
+        <div class="search-box">
+            <input 
+                type="text" 
+                id="order-id-input" 
+                placeholder="Enter Order ID (e.g., #ABC123)"
+            >
+            <button onclick="trackOrder()">Track Order</button>
+        </div>
+        
+        <div id="tracking-result"></div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+        
+        async function trackOrder() {
+            const orderId = document.getElementById('order-id-input').value.trim();
+            
+            if (!orderId) {
+                alert('Please enter an order ID');
+                return;
+            }
+            
+            // Remove # if user included it
+            const cleanOrderId = orderId.replace('#', '');
+            
+            try {
+                const response = await fetch(`${API_URL}/orders/short/${cleanOrderId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayOrderTracking(result.data);
+                } else {
+                    displayError('Order not found. Please check your order ID.');
+                }
+            } catch (error) {
+                console.error('Tracking error:', error);
+                displayError('Failed to track order. Please try again.');
+            }
+        }
+        
+        function displayOrderTracking(order) {
+            const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+            const currentStatusIndex = statuses.indexOf(order.orderStatus);
+            
+            const timeline = statuses.map((status, index) => {
+                let statusClass = '';
+                if (index < currentStatusIndex) statusClass = 'completed';
+                else if (index === currentStatusIndex) statusClass = 'active';
+                
+                return `
+                    <div class="timeline-item ${statusClass}">
+                        <div class="timeline-content">
+                            ${index === currentStatusIndex ? '<div class="timeline-date">Current Status</div>' : ''}
+                            <h3>${status}</h3>
+                            <p>${getStatusDescription(status)}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const html = `
+                <div class="order-timeline">
+                    <h2>Order #${order._id.slice(-6)}</h2>
+                    <p>Placed on: ${new Date(order.createdAt).toLocaleDateString()}</p>
+                    <p>Expected Delivery: ${new Date(order.deliveryDate).toLocaleDateString()}</p>
+                    
+                    <div class="timeline">
+                        ${timeline}
+                    </div>
+                    
+                    <div class="order-details">
+                        <h3>Order Items</h3>
+                        ${order.orderItems.map(item => `
+                            <div class="order-item">
+                                <div>
+                                    <strong>${item.name}</strong><br>
+                                    <small>Quantity: ${item.quantity}</small>
+                                </div>
+                                <div>৳${item.price * item.quantity}</div>
+                            </div>
+                        `).join('')}
+                        
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <strong>Total: ৳${order.totalPrice}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="order-details">
+                        <h3>Delivery Address</h3>
+                        <p>
+                            ${order.shippingAddress.name}<br>
+                            ${order.shippingAddress.phone}<br>
+                            ${order.shippingAddress.address}<br>
+                            ${order.shippingAddress.city}, ${order.shippingAddress.district}
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('tracking-result').innerHTML = html;
+        }
+        
+        function getStatusDescription(status) {
+            const descriptions = {
+                'Pending': 'Order received and waiting for confirmation',
+                'Processing': 'Your order is being prepared',
+                'Shipped': 'Order is on the way to you',
+                'Delivered': 'Order has been delivered'
+            };
+            return descriptions[status] || '';
+        }
+        
+        function displayError(message) {
+            document.getElementById('tracking-result').innerHTML = `
+                <div class="error-message">
+                    <h3>❌ ${message}</h3>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

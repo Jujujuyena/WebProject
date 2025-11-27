@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনলাইন ফুলের দোকান - Online Flower Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>🌸 Flower Shop</h1>
+                </div>
+                
+                <!-- Hamburger Menu Icon -->
+                <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                    <li><a href="#products" onclick="closeMenu()">Products</a></li>
+                    <li><a href="tracking.html">Track Order</a></li>
+                    <li><a href="#about" onclick="closeMenu()">About</a></li>
+                    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+                    <li><a href="#cart" class="cart-icon" onclick="showCart(); closeMenu()">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+                </ul>
+                
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn-login" onclick="showLogin()">Login</button>
+                    <button class="btn-signup" onclick="showSignup()">Sign Up</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Fresh Flowers for Every Occasion</h2>
+            <p>সুন্দর ফুল দিয়ে আপনার প্রিয়জনদের মুগ্ধ করুন</p>
+            <button class="btn-primary" onclick="scrollToProducts()">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">ফুলের ক্যাটাগরি</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="filterCategory('birthday')">
+                    <span class="category-icon">🎂</span>
+                    <h3>Birthday</h3>
+                </div>
+                <div class="category-card" onclick="filterCategory('anniversary')">
+                    <span class="category-icon">💑</span>
+                    <h3>Anniversary</h3>
+                </div>
+                <div class="category-card" onclick="filterCategory('wedding')">
+                    <span class="category-icon">💒</span>
+                    <h3>Wedding</h3>
+                </div>
+                <div class="category-card" onclick="filterCategory('love')">
+                    <span class="category-icon">❤️</span>
+                    <h3>Love & Romance</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">আমাদের ফুলের সংগ্রহ</h2>
+            
+            <!-- Search and Filter -->
+            <div class="filter-section">
+                <input type="text" id="search-input" placeholder="ফুল খুঁজুন..." onkeyup="searchProducts()">
+                <select id="price-filter" onchange="filterByPrice()">
+                    <option value="all">All Prices</option>
+                    <option value="low">৳500 এর নিচে</option>
+                    <option value="medium">৳500 - ৳1000</option>
+                    <option value="high">৳1000+ এর উপরে</option>
+                </select>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Your Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                <h3>Total: ৳<span id="total-price">0</span></h3>
+                <button class="btn-primary" onclick="proceedToCheckout()">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogin()">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSignup()">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signup-form" onsubmit="handleSignup(event)">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="tel" placeholder="Phone Number" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal with Reviews -->
+    <div id="product-detail-modal" class="modal">
+        <div class="modal-content product-detail">
+            <span class="close" onclick="closeProductDetail()">&times;</span>
+            
+            <div class="product-detail-container">
+                <!-- Product Image -->
+                <div class="product-detail-image" id="detail-image"></div>
+                
+                <!-- Product Info -->
+                <div class="product-detail-info">
+                    <h2 id="detail-name"></h2>
+                    <p id="detail-namebn" style="color: #667eea; font-size: 1.2rem;"></p>
+                    
+                    <!-- Rating Display -->
+                    <div class="rating-display">
+                        <span class="stars" id="detail-stars"></span>
+                        <span id="detail-rating-text"></span>
+                    </div>
+                    
+                    <p id="detail-description" style="margin: 1rem 0;"></p>
+                    
+                    <div class="product-detail-price" id="detail-price"></div>
+                    
+                    <div class="product-detail-meta">
+                        <p><strong>Category:</strong> <span id="detail-category"></span></p>
+                        <p><strong>Stock:</strong> <span id="detail-stock"></span></p>
+                    </div>
+                    
+                    <button class="add-to-cart-btn" id="detail-add-cart">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="reviews-section">
+                <h3>Customer Reviews</h3>
+                
+                <!-- Add Review Form -->
+                <div id="add-review-form" class="add-review-form" style="display: none;">
+                    <h4>Write a Review</h4>
+                    <form onsubmit="submitReview(event)">
+                        <div class="rating-input">
+                            <label>Your Rating:</label>
+                            <div class="star-rating">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" id="review-rating" required>
+                        </div>
+                        
+                        <textarea 
+                            id="review-comment" 
+                            placeholder="Share your experience with this product..." 
+                            rows="4" 
+                            required
+                        ></textarea>
+                        
+                        <button type="submit" class="btn-primary">Submit Review</button>
+                    </form>
+                </div>
+                
+                <!-- Reviews List -->
+                <div id="reviews-list" class="reviews-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>📞 +880 1XXX-XXXXXX</p>
+                    <p>📧 info@flowershop.com</p>
+                    <p>📍 Dhaka, Bangladesh</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="tracking.html">Track Order</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <p>Facebook | Instagram | Twitter</p>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2024 Online Flower Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

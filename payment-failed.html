@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - Flower Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .failed-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 3rem;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .failed-icon {
+            font-size: 5rem;
+            color: #f44336;
+            margin-bottom: 1rem;
+        }
+        .failed-container h1 {
+            color: #f44336;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>🌸 Flower Shop</h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="failed-container">
+        <div class="failed-icon">❌</div>
+        <h1>Payment Failed!</h1>
+        <h2>পেমেন্ট ব্যর্থ হয়েছে!</h2>
+        <p>Unfortunately, your payment could not be processed.</p>
+        <p>Please try again or contact support.</p>
+        
+        <button class="btn-primary" onclick="window.location.href='index.html'" style="margin-top: 2rem;">
+            Back to Home
+        </button>
+        <button class="btn-primary" onclick="window.location.href='index.html#cart'" style="margin-left: 1rem;">
+            View Cart
+        </button>
+    </div>
+</body>
+</html>

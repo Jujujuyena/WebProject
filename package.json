@@ -1,0 +1,22 @@
+{
+  "name": "web111",
+  "version": "1.0.0",
+  "description": "",
+  "main": "admin-script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jujujuyena/WebProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Jujujuyena/WebProject/issues"
+  },
+  "homepage": "https://github.com/Jujujuyena/WebProject#readme"
+}

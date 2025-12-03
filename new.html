@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Theme E-Commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
+    <header>
+        <nav class="navbar container">
+            <div class="logo">
+                <h1>Shop<span class="gradient-text">Verse</span></h1>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#products">Shop</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li class="auth-buttons">
+                    <button class="btn-login">Login</button>
+                    <button class="btn-signup">Sign Up</button>
+                </li>
+            </ul>
+
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="#" class="cart-icon" onclick="openModal('cart-modal')">
+                    <i class="fas fa-shopping-cart"></i> Cart (0)
+                </a>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2 class="gradient-text">Discover Quality <br> That Speaks Volumes</h2>
+            <p class="hero-subtitle">Curated collections for the modern lifestyle.</p>
+            <button class="btn-primary">
+                Shop Now <i class="fas fa-arrow-right btn-icon"></i>
+            </button>
+        </div>
+    </section>
+
+    <section id="categories" class="categories container">
+        <h2 class="section-title">Browse Categories</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fas fa-tshirt category-icon" style="color: #e63946;"></i>
+                </div>
+                <h3>Fashion</h3>
+                <p>Trending styles for everyone</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fas fa-laptop category-icon" style="color: #06c755;"></i>
+                </div>
+                <h3>Electronics</h3>
+                <p>Latest gadgets and tech</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon-wrapper">
+                    <i class="fas fa-couch category-icon" style="color: #f77f00;"></i>
+                </div>
+                <h3>Home Decor</h3>
+                <p>Modern furniture & art</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            
+            <div class="filter-section">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                </div>
+                <div class="filter-wrapper">
+                    <select id="price-filter">
+                        <option value="all">All Prices</option>
+                        <option value="low">Under $50</option>
+                        <option value="mid">$50 - $100</option>
+                        <option value="high">Over $100</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card" onclick="openModal('product-modal')">
+                    <div class="product-image">
+                        <i class="fas fa-headphones-alt" style="color: #2d3436;"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Audio</span>
+                        <h3>Premium Wireless Headphones</h3>
+                        <div class="rating-display">
+                            <div class="stars">★★★★★</div>
+                            <span>(128)</span>
+                        </div>
+                        <p class="product-price">$249.99</p>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="openModal('product-modal')">
+                    <div class="product-image">
+                        <i class="fas fa-shoe-prints" style="color: #e63946;"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Fashion</span>
+                        <h3>Urban Running Sneakers</h3>
+                        <div class="rating-display">
+                            <div class="stars">★★★★☆</div>
+                            <span>(85)</span>
+                        </div>
+                        <p class="product-price">$89.50</p>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card" onclick="openModal('product-modal')">
+                    <div class="product-image">
+                        <i class="fas fa-camera" style="color: #f77f00;"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Tech</span>
+                        <h3>Vintage Film Camera</h3>
+                        <div class="rating-display">
+                            <div class="stars">★★★★★</div>
+                            <span>(42)</span>
+                        </div>
+                        <p class="product-price">$120.00</p>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+                 <div class="product-card" onclick="openModal('product-modal')">
+                    <div class="product-image">
+                        <i class="fas fa-chair" style="color: #06c755;"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Home</span>
+                        <h3>Ergonomic Office Chair</h3>
+                        <div class="rating-display">
+                            <div class="stars">★★★★☆</div>
+                            <span>(210)</span>
+                        </div>
+                        <p class="product-price">$199.99</p>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="container reviews-section">
+        <h3>Customer Reviews</h3>
+        
+        <div class="add-review-form">
+            <h4>Write a Review</h4>
+            <div class="rating-input">
+                <label>Your Rating:</label>
+                <div class="star-rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+            </div>
+            <textarea placeholder="Share your experience..." rows="4" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ddd;"></textarea>
+            <button class="btn-primary" style="margin-top: 15px;">Submit Review</button>
+        </div>
+
+        <div class="reviews-list">
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-author">Sarah Jenkins</span>
+                    <span class="review-stars">★★★★★</span>
+                </div>
+                <p class="review-comment">Absolutely love the quality of the headphones! The shipping was incredibly fast and the packaging was eco-friendly. Will definitely shop here again.</p>
+                <span class="review-date">Posted 2 days ago</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ShopVerse</h3>
+                    <p>Redefining the online shopping experience with quality, speed, and sustainability.</p>
+                    <div class="social-links" style="margin-top: 20px;">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for updates and exclusive offers.</p>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <input type="email" placeholder="Email address" style="padding: 10px; border-radius: 20px; border: none; flex: 1;">
+                        <button class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Go</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 ShopVerse Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cart-modal')">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items">
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>Wireless Headphones</h4>
+                        <p>Quantity: 1</p>
+                    </div>
+                    <div class="cart-item-price">$249.99</div>
+                    <button class="remove-item"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="cart-total">
+                <h3>Total: $249.99</h3>
+                <button class="btn-primary" style="width: 100%;">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content product-detail">
+            <span class="close" onclick="closeModal('product-modal')">&times;</span>
+            <div class="product-detail-container">
+                <div class="product-detail-image">
+                    <i class="fas fa-headphones-alt" style="color: #2d3436;"></i>
+                </div>
+                <div class="product-detail-info">
+                    <span class="product-category">Audio</span>
+                    <h2>Premium Wireless Headphones</h2>
+                    <p class="product-detail-price">$249.99</p>
+                    <p>Experience crystal clear sound with our latest noise-cancelling technology. Perfect for travel, work, or relaxation.</p>
+                    
+                    <div class="product-detail-meta">
+                        <p><strong>Availability:</strong> In Stock</p>
+                        <p><strong>SKU:</strong> AUDIO-001</p>
+                    </div>
+
+                    <button class="btn-primary" style="width: 100%;">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>

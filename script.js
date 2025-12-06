@@ -17,7 +17,9 @@ if (token) {
 // Load products when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadProducts();
+
     updateCartCount();
+    
 });
 
 // Toggle Mobile Menu
@@ -54,6 +56,8 @@ async function loadProducts() {
         if (result.success) {
             products = result.data;
             displayProducts(products);
+            loadFloweringPlants(); // ✅ Products load howar por call koro
+            loadOrnaments();
         }
     } catch (error) {
         console.error('Error loading products:', error);
@@ -76,13 +80,17 @@ function displayProducts(productsToShow) {
     productsToShow.forEach(product => {
         const productCard = `
             <div class="product-card" data-id="${product._id}" onclick="showProductDetail('${product._id}')">
-                <div class="product-image">${product.image}</div>
+                <div class="product-image">
+                    <img src="http://localhost:5000${product.image}" alt="${product.name}">
+                </div>
                 <div class="product-info">
                     <span class="product-category">${product.category}</span>
                     <h3>${product.name}</h3>
                     <p>${product.namebn}</p>
                     <div class="rating-display">
-                        <span class="stars" style="font-size: 1rem;">${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}</span>
+                        <span class="stars" style="font-size: 1rem;">
+                            ${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}
+                        </span>
                         <span style="font-size: 0.9rem; color: #666;">(${product.numReviews || 0})</span>
                     </div>
                     <div class="product-price">৳${product.price}</div>
@@ -142,11 +150,14 @@ function filterByPrice() {
     displayProducts(filteredProducts);
 }
 
-// Add to Cart
+// Add to Cart (for Flowers)
 function addToCart(productId) {
     const product = products.find(p => p._id === productId);
     
     if (!product) return;
+    
+    // Get existing cart
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
     const existingItem = cart.find(item => item._id === productId);
     
@@ -154,8 +165,13 @@ function addToCart(productId) {
         existingItem.quantity += 1;
     } else {
         cart.push({
-            ...product,
-            quantity: 1
+            _id: product._id,
+            name: product.name,
+            nameBn: product.namebn,
+            price: product.price,
+            image: product.image,
+            quantity: 1,
+            type: 'flower'
         });
     }
     
@@ -180,40 +196,57 @@ function updateCartCount() {
 
 // Show Cart Modal
 function showCart() {
-    const modal = document.getElementById('cart-modal');
-    const cartItems = document.getElementById('cart-items');
-    
-    if (!modal || !cartItems) return;
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p style="text-align: center; padding: 2rem;">Your cart is empty! আপনার কার্ট খালি!</p>';
-        const totalPrice = document.getElementById('total-price');
-        if (totalPrice) totalPrice.textContent = '0';
-    } else {
-        cartItems.innerHTML = '';
-        let total = 0;
-        
-        cart.forEach(item => {
-            total += item.price * item.quantity;
-            const cartItem = `
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <h4>${item.name}</h4>
-                        <p>Quantity: ${item.quantity}</p>
-                        <p class="cart-item-price">৳${item.price} x ${item.quantity} = ৳${item.price * item.quantity}</p>
-                    </div>
-                    <button class="remove-item" onclick="removeFromCart('${item._id}')">Remove</button>
-                </div>
-            `;
-            cartItems.innerHTML += cartItem;
-        });
-        
-        const totalPrice = document.getElementById('total-price');
-        if (totalPrice) totalPrice.textContent = total;
-    }
-    
-    modal.style.display = 'block';
+  const modal = document.getElementById('cart-modal');
+  const cartItems = document.getElementById('cart-items');
+  if (!modal || !cartItems) return;
+
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = '<p style="text-align: center; padding: 2rem;">Your cart is empty! আপনার কার্ট খালি!</p>';
+    const totalPrice = document.getElementById('total-price');
+    if (totalPrice) totalPrice.textContent = '0';
+
+    // subtotal & shipping reset
+    const itemsTotalEl = document.getElementById('items-total');
+    const shippingEl = document.getElementById('shipping-fee');
+    if (itemsTotalEl) itemsTotalEl.textContent = '0';
+    if (shippingEl) shippingEl.textContent = '50';
+  } else {
+    cartItems.innerHTML = '';
+    let itemsTotal = 0;
+
+    cart.forEach(item => {
+      itemsTotal += item.price * item.quantity;
+
+      const cartItem = `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>Quantity: ${item.quantity}</p>
+            <p class="cart-item-price">৳${item.price} x ${item.quantity} = ৳${item.price * item.quantity}</p>
+          </div>
+          <button class="remove-item" onclick="removeFromCart('${item._id || item.id}')">Remove</button>
+        </div>
+      `;
+      cartItems.innerHTML += cartItem;
+    });
+
+    const shipping = 50;
+    const grandTotal = itemsTotal + shipping;
+
+    const itemsTotalEl = document.getElementById('items-total');
+    const shippingEl = document.getElementById('shipping-fee');
+    if (itemsTotalEl) itemsTotalEl.textContent = itemsTotal;
+    if (shippingEl) shippingEl.textContent = shipping;
+
+    const totalPrice = document.getElementById('total-price');
+    if (totalPrice) totalPrice.textContent = grandTotal;
+  }
+
+  modal.style.display = 'block';
 }
+
 
 function closeCart() {
     const modal = document.getElementById('cart-modal');
@@ -221,8 +254,8 @@ function closeCart() {
 }
 
 // Remove from Cart
-function removeFromCart(productId) {
-    cart = cart.filter(item => item._id !== productId);
+function removeFromCart(itemId) {
+    cart = cart.filter(item => (item._id || item.id) !== itemId);
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
     showCart();
@@ -258,7 +291,7 @@ async function createSimpleOrder() {
     try {
         const orderData = {
             orderItems: cart.map(item => ({
-                product: item._id,
+                product: item._id || item.id,
                 name: item.name,
                 quantity: item.quantity,
                 price: item.price,
@@ -439,7 +472,10 @@ async function showProductDetail(productId) {
     const product = products.find(p => p._id === productId);
     if (!product) return;
     
-    document.getElementById('detail-image').textContent = product.image;
+    document.getElementById('detail-image').innerHTML = `
+        <img src="http://localhost:5000${product.image}" alt="${product.name}">
+    `;
+
     document.getElementById('detail-name').textContent = product.name;
     document.getElementById('detail-namebn').textContent = product.namebn;
     document.getElementById('detail-description').textContent = product.description || 'No description available.';
@@ -562,14 +598,6 @@ async function submitReview(event) {
     }
 }
 
-// Scroll to Products
-function scrollToProducts() {
-    const productsSection = document.getElementById('products');
-    if (productsSection) {
-        productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
 // Show Notification
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
@@ -608,29 +636,139 @@ window.onclick = function(event) {
     if (event.target === productModal) closeProductDetail();
 }
 
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+// ==================== CHAT FUNCTIONS ====================
+
+// Open Chat
+function openChatBox() {
+    document.getElementById("chat-popup").style.display = "flex";
+}
+
+// Close Chat
+function closeChatBox() {
+    document.getElementById("chat-popup").style.display = "none";
+}
+
+// Send message
+function sendMessage(e) {
+    if (e.key === "Enter") sendManual();
+}
+
+function sendManual() {
+    const input = document.getElementById("chat-input");
+    const body = document.getElementById("chat-body");
+
+    if (input.value.trim() === "") return;
+
+    // User Message
+    let userMsg = document.createElement("p");
+    userMsg.className = "user-msg";
+    userMsg.textContent = input.value;
+    body.appendChild(userMsg);
+
+    // Admin receive (Backend API Example)
+    fetch("http://localhost:5000/api/chat-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            message: input.value,
+            time: new Date()
+        })
+    });
+
+    // Bot Auto Reply
+    setTimeout(() => {
+        let bot = document.createElement("p");
+        bot.className = "bot-msg";
+        bot.textContent = "Thanks! We will reply shortly 😊";
+        body.appendChild(bot);
+        body.scrollTop = body.scrollHeight;
+    }, 600);
+
+    input.value = "";
+    body.scrollTop = body.scrollHeight;
+}
+
+
+
+
+
+
+
+
+function loadFloweringPlants() {
+    const grid = document.getElementById('flowering-plants-grid');
+    if (!grid) return;
+
+    // Filter flowering plants
+    const flowering = products.filter(p => 
+        p.category === 'flowering-plant' || 
+        p.category === 'Flowering Plant'
+    );
+
+    grid.innerHTML = '';
+
+    if (flowering.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:2rem;">No flowering plants available</p>';
+        return;
     }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+
+    flowering.forEach(product => {
+        const card = `
+            <div class="product-card" onclick="showProductDetail('${product._id}')">
+                <div class="product-image">
+                    <img src="http://localhost:5000${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-info">
+                    <span class="product-category">${product.category}</span>
+                    <h3>${product.name}</h3>
+                    <p>${product.namebn}</p>
+                    <div class="rating-display">
+                        <span class="stars">
+                            ${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}
+                        </span>
+                        <span>(${product.numReviews || 0})</span>
+                    </div>
+                    <div class="product-price">৳${product.price}</div>
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product._id}')">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+            </div>
+        `;
+        grid.innerHTML += card;
+    });
+}
+
+
+
+
+function loadOrnaments() {
+  const grid = document.getElementById('ornaments-grid');
+  if (!grid) return;
+
+  const ornaments = products.filter(p => p.category === 'ornament');
+
+  grid.innerHTML = '';
+  ornaments.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'ornament-card';
+
+    card.innerHTML = `
+      <div class="product-image"
+           style="background-image:url('http://localhost:5000${product.image}')"></div>
+      <p>${product.name}</p>
+      <span class="ornament-caption-bn">${product.namebn}</span>
+      <div class="product-price">৳${product.price}</div>
+      <button class="btn-primary"
+              onclick="addToCart(${product._id || product.id}); event.stopPropagation();">
+        🛒 Add to Cart
+      </button>
+    `;
+
+    card.addEventListener('click', () => {
+      showProductDetail(product._id || product.id);
+    });
+
+    grid.appendChild(card);
+  });
+}

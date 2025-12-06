@@ -73,6 +73,9 @@ app.use((err, req, res, next) => {
         error: process.env.NODE_ENV === 'development' ? err.message : {}
     });
 });
+// Serve static images
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 // 404 Handler
 app.use((req, res) => {
@@ -96,4 +99,3 @@ try {
 } catch (err) {
     console.log("⚠️ Chat route not found");
 }
-

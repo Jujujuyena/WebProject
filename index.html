@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
     <!-- Header Section -->
     <header>
         <nav class="navbar">
@@ -39,54 +48,103 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h2>Fresh Flowers for Every Occasion</h2>
-            <p>সুন্দর ফুল দিয়ে আপনার প্রিয়জনদের মুগ্ধ করুন</p>
-            <button class="btn-primary" onclick="scrollToProducts()">Shop Now</button>
+    
+
+
+
+
+    <!-- Hero Section with Video -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h2 class="gradient-text">Fresh Flowers for Every Occasion</h2>
+        <p class="hero-subtitle">সুন্দর ফুল দিয়ে আপনার প্রিয়জনদের মুগ্ধ করুন</p>
+
+        <!-- Video Wrapper -->
+        <div class="video-wrapper">
+            <iframe 
+                src="website video for online flower shop_.mp4" 
+                title="Bouquet Video" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
-    </section>
+
+        <!-- Call-to-Action Buttons -->
+        <div class="hero-buttons">
+            <a href="https://wa.me/8801796292100?text=Hi! I'm interested in this bouquet 🌸" 
+               target="_blank" 
+               class="btn-primary">
+                💬 Message Us
+            </a>
+            <span class="availability-text">Available This Bouquet To Us!</span>
+        </div>
+    </div>
+</section>
+
+
+
+
 
     <!-- Categories Section -->
     <section class="categories">
         <div class="container">
-            <h2 class="section-title">ফুলের ক্যাটাগরি</h2>
+            <h2 class="section-title gradient-text">ফুলের ক্যাটাগরি</h2>
             <div class="category-grid">
                 <div class="category-card" onclick="filterCategory('birthday')">
-                    <span class="category-icon">🎂</span>
+                    <div class="category-icon-wrapper">
+                        <span class="category-icon">🎂</span>
+                    </div>
                     <h3>Birthday</h3>
+                    <p>জন্মদিনের বিশেষ ফুল</p>
                 </div>
                 <div class="category-card" onclick="filterCategory('anniversary')">
-                    <span class="category-icon">💑</span>
+                    <div class="category-icon-wrapper">
+                        <span class="category-icon">💑</span>
+                    </div>
                     <h3>Anniversary</h3>
+                    <p>বার্ষিকীর স্মরণীয় উপহার</p>
                 </div>
                 <div class="category-card" onclick="filterCategory('wedding')">
-                    <span class="category-icon">💒</span>
+                    <div class="category-icon-wrapper">
+                        <span class="category-icon">💒</span>
+                    </div>
                     <h3>Wedding</h3>
+                    <p>বিয়ের সাজসজ্জা</p>
                 </div>
                 <div class="category-card" onclick="filterCategory('love')">
-                    <span class="category-icon">❤️</span>
+                    <div class="category-icon-wrapper">
+                        <span class="category-icon">❤️</span>
+                    </div>
                     <h3>Love & Romance</h3>
+                    <p>ভালোবাসার প্রকাশ</p>
                 </div>
             </div>
         </div>
     </section>
 
+            
+          
+
+    
     <!-- Products Section -->
     <section class="products" id="products">
         <div class="container">
-            <h2 class="section-title">আমাদের ফুলের সংগ্রহ</h2>
+            <h2 class="section-title gradient-text">আমাদের ফুলের সংগ্রহ</h2>
             
             <!-- Search and Filter -->
             <div class="filter-section">
-                <input type="text" id="search-input" placeholder="ফুল খুঁজুন..." onkeyup="searchProducts()">
-                <select id="price-filter" onchange="filterByPrice()">
-                    <option value="all">All Prices</option>
-                    <option value="low">৳500 এর নিচে</option>
-                    <option value="medium">৳500 - ৳1000</option>
-                    <option value="high">৳1000+ এর উপরে</option>
-                </select>
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="🔍 ফুল খুঁজুন..." onkeyup="searchProducts()">
+                </div>
+                <div class="filter-wrapper">
+                    <select id="price-filter" onchange="filterByPrice()">
+                        <option value="all">All Prices</option>
+                        <option value="low">৳500 এর নিচে</option>
+                        <option value="medium">৳500 - ৳1000</option>
+                        <option value="high">৳1000+ এর উপরে</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Products Grid -->
@@ -98,50 +156,65 @@
 
     <!-- Cart Modal -->
     <div id="cart-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content glass-effect">
             <span class="close" onclick="closeCart()">&times;</span>
-            <h2>Your Shopping Cart</h2>
+            <h2 class="gradient-text">Your Shopping Cart</h2>
             <div id="cart-items"></div>
             <div class="cart-total">
-                <h3>Total: ৳<span id="total-price">0</span></h3>
-                <button class="btn-primary" onclick="proceedToCheckout()">Checkout</button>
+  <p style="margin:0; font-size:0.9rem;">
+    Subtotal: ৳<span id="items-total">0</span><br>
+    Shipping: ৳<span id="shipping-fee">50</span>
+  </p>
+  <h3 style="margin-top:0.5rem;">
+    Total: ৳<span id="total-price">0</span>
+  </h3>
+                <button class="btn-primary" onclick="proceedToCheckout()">
+                    <span>Checkout</span>
+                    <span class="btn-icon">✓</span>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Login Modal -->
     <div id="login-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content glass-effect">
             <span class="close" onclick="closeLogin()">&times;</span>
-            <h2>Login</h2>
+            <h2 class="gradient-text">Login</h2>
             <form id="login-form" onsubmit="handleLogin(event)">
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="btn-primary">Login</button>
+                <input type="email" placeholder="📧 Email" required>
+                <input type="password" placeholder="🔒 Password" required>
+                <button type="submit" class="btn-primary">
+                    <span>Login</span>
+                    <span class="btn-icon">→</span>
+                </button>
             </form>
-            <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+            <p class="form-link">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
         </div>
     </div>
 
     <!-- Signup Modal -->
     <div id="signup-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content glass-effect">
             <span class="close" onclick="closeSignup()">&times;</span>
-            <h2>Sign Up</h2>
+            <h2 class="gradient-text">Sign Up</h2>
             <form id="signup-form" onsubmit="handleSignup(event)">
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email" required>
-                <input type="tel" placeholder="Phone Number" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="btn-primary">Sign Up</button>
+                <input type="text" placeholder="👤 Full Name" required>
+                <input type="email" placeholder="📧 Email" required>
+                <input type="tel" placeholder="📱 Phone Number" required>
+                <input type="password" placeholder="🔒 Password" required>
+                <button type="submit" class="btn-primary">
+                    <span>Sign Up</span>
+                    <span class="btn-icon">→</span>
+                </button>
             </form>
-            <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            <p class="form-link">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
         </div>
     </div>
 
     <!-- Product Detail Modal with Reviews -->
     <div id="product-detail-modal" class="modal">
-        <div class="modal-content product-detail">
+        <div class="modal-content product-detail glass-effect">
             <span class="close" onclick="closeProductDetail()">&times;</span>
             
             <div class="product-detail-container">
@@ -151,7 +224,7 @@
                 <!-- Product Info -->
                 <div class="product-detail-info">
                     <h2 id="detail-name"></h2>
-                    <p id="detail-namebn" style="color: #667eea; font-size: 1.2rem;"></p>
+                    <p id="detail-namebn" class="gradient-text" style="font-size: 1.2rem; margin: 0.5rem 0;"></p>
                     
                     <!-- Rating Display -->
                     <div class="rating-display">
@@ -159,24 +232,24 @@
                         <span id="detail-rating-text"></span>
                     </div>
                     
-                    <p id="detail-description" style="margin: 1rem 0;"></p>
+                    <p id="detail-description" style="margin: 1rem 0; color: rgba(255,255,255,0.8);"></p>
                     
-                    <div class="product-detail-price" id="detail-price"></div>
+                    <div class="product-detail-price gradient-text" id="detail-price"></div>
                     
                     <div class="product-detail-meta">
                         <p><strong>Category:</strong> <span id="detail-category"></span></p>
                         <p><strong>Stock:</strong> <span id="detail-stock"></span></p>
                     </div>
                     
-                    <button class="add-to-cart-btn" id="detail-add-cart">
-                        🛒 Add to Cart
+                    <button class="add-to-cart-btn btn-primary" id="detail-add-cart">
+                        <span>🛒 Add to Cart</span>
                     </button>
                 </div>
             </div>
             
             <!-- Reviews Section -->
             <div class="reviews-section">
-                <h3>Customer Reviews</h3>
+                <h3 class="gradient-text">Customer Reviews</h3>
                 
                 <!-- Add Review Form -->
                 <div id="add-review-form" class="add-review-form" style="display: none;">
@@ -201,7 +274,10 @@
                             required
                         ></textarea>
                         
-                        <button type="submit" class="btn-primary">Submit Review</button>
+                        <button type="submit" class="btn-primary">
+                            <span>Submit Review</span>
+                            <span class="btn-icon">✓</span>
+                        </button>
                     </form>
                 </div>
                 
@@ -210,35 +286,147 @@
             </div>
         </div>
     </div>
+<!-- Floating Chat & WhatsApp Buttons -->
+<div class="chat-whatsapp-container">
+    <a href="#" class="chat-button" onclick="openChatBox()">
+        💬 Chat with Us
+    </a>
 
-    <!-- Footer -->
-    <footer>
+    <a href="https://wa.me/8801796292100?text=Hello! I want to order flowers 🌸"
+       target="_blank"
+       class="whatsapp-button">
+        🟢 WhatsApp
+    </a>
+</div>
+
+<!-- Chat Box Popup -->
+<div id="chat-popup" class="chat-popup">
+    <div class="chat-header">
+        <span>Support Chat</span>
+        <span class="close-chat" onclick="closeChatBox()">✖</span>
+    </div>
+
+    <div class="chat-body" id="chat-body">
+        <p class="bot-msg">Hi 😊 How can I help you?</p>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="sendMessage(event)">
+        <button onclick="sendManual()">➤</button>
+    </div>
+</div>
+
+
+<!-- Flowering Plants Section -->
+<section class="products flowering-plants-section" id="flowering-plants">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <p>📞 +880 1XXX-XXXXXX</p>
-                    <p>📧 info@flowershop.com</p>
-                    <p>📍 Dhaka, Bangladesh</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#products">Products</a></li>
-                        <li><a href="tracking.html">Track Order</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Follow Us</h3>
-                    <p>Facebook | Instagram | Twitter</p>
+            <h2 class="section-title gradient-text">Flowering Plants Collection</h2>
+            <p class="section-subtitle">
+                ঘর সাজাতে আর গিফট দিতে পটে লাগানো সুন্দর flowering plants বেছে নিন
+            </p>
+
+            <div class="products-grid" id="flowering-plants-grid">
+                <!-- JS diye flowering plants gulo ekhane load hobe -->
+            </div>
+        </div>
+    </section>
+    
+
+
+
+
+
+    <!-- Flowering Ornaments Section (Footer er age) -->
+<section class="flower-ornaments-section">
+  <div class="container">
+    <h2 class="section-title ornaments-title-en">
+      Also You Get Flowering Ornaments
+    </h2>
+    <h3 class="section-title ornaments-title-bn">
+      এছাড়াও পাবেন ফ্লাওয়ারিং অলংকার
+    </h3>
+
+    <p class="section-subtitle ornaments-subtitle">
+      সুন্দর রিস্ট-ব্যান্ড, চুলের গোঁছা, গলার মালা, গাজরা ইত্যাদি ফুলের অলংকারের বিশেষ সংগ্রহ থেকে বেছে নিন।
+    </p>
+
+    
+     <div class="ornaments-grid" id="ornaments-grid">
+      <!-- JS diye product card ashbe -->
+    </div>   
+
+    </div>
+</section>
+
+
+
+    
+
+    <footer>
+    <div class="container">
+        <div class="footer-content">
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h3 class="gradient-text">Contact Us</h3>
+                <p>📞 +880 1796292100</p>
+                <p>📧 flowershop@gmail.com</p>
+                <p>📍 Sylhet, Bangladesh</p>
+
+                <p style="margin-top:10px; font-weight:bold;">🕒 Support Hours</p>
+                <p>Everyday: 9 AM – 10 PM</p>
+            </div>
+
+            <!-- Special About Section -->
+            <div class="footer-section">
+                <h3 class="gradient-text">About Us</h3>
+                <p>
+                    We deliver fresh flowers for birthdays, weddings, anniversaries and all special moments.  
+                    আমরা ভালোবাসা আর অনুভূতি পৌঁছে দিই সুন্দর ফুলের মাধ্যমে। 
+                </p>
+                <p style="margin-top:10px;"><a href="#about" style="color:#fff; text-decoration:underline;">Learn More →</a></p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3 class="gradient-text">Quick Links</h3>
+                <ul>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="tracking.html">Track Order</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home">Back to Home</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="footer-section">
+                <h3 class="gradient-text">Follow Us</h3>
+                <div class="social-links">
+
+                    <!-- Facebook Page -->
+                    <a href="https://www.facebook.com/https://www.facebook.com/Onlineflowershopanddelivery10" 
+                       target="_blank" 
+                       class="social-icon">📘</a>
+
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID"
+                       target="_blank"
+                       class="social-icon">📷</a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/8801796292100?text=Hi!%20I%20want%20to%20order%20flowers"
+                       target="_blank"
+                       class="social-icon">🟢</a>
                 </div>
             </div>
-            <p class="copyright">&copy; 2024 Online Flower Shop. All rights reserved.</p>
-        </div>
-    </footer>
 
-    <script src="script.js"></script>
+        </div>
+
+        <p class="copyright">
+            &copy; 2024 Online Flower Shop. Crafted with ❤️ by Fatema
+        </p>
+    </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>

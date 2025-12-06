@@ -23,7 +23,25 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Please provide product category'],
-        enum: ['birthday', 'anniversary', 'wedding', 'love', 'sympathy', 'congratulations', 'other']
+        enum: [
+            'birthday', 
+            'anniversary', 
+            'wedding', 
+            'love', 
+            'sympathy', 
+            'congratulations', 
+            'other',
+            'flowering-plant',
+            'wedding and sympathy',
+            'birthday and other',
+            'birthday  and other',
+            'birthday and so many other',
+            'wedding and other',
+            'love and Gift',
+            'love and other',
+            'wedding and gift',
+            'Love and other'
+        ]
     },
     image: {
         type: String,

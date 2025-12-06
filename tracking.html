@@ -269,9 +269,12 @@
                             </div>
                         `).join('')}
                         
-                        <div style="text-align: right; margin-top: 1rem;">
-                            <strong>Total: ৳${order.totalPrice}</strong>
-                        </div>
+                        <div style="text-align: right; margin-top: 1rem; font-size: 0.95rem;">
+    <div>Subtotal: ৳${order.itemsPrice}</div>
+    <div>Shipping: ৳${order.shippingPrice}</div>
+    <div><strong>Total: ৳${order.totalPrice}</strong></div>
+</div>
+
                     </div>
                     
                     <div class="order-details">
